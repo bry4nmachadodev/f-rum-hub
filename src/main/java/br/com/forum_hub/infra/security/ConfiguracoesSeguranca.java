@@ -23,6 +23,7 @@
         }
 
 
+        @Bean
         public SecurityFilterChain filtrosSeguranca(HttpSecurity http) throws Exception {
             return http
                     .authorizeHttpRequests(
