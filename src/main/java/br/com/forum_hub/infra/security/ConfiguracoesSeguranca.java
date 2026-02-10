@@ -23,14 +23,20 @@
         }
 
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain filtrosSeguranca(HttpSecurity http) throws Exception {
             return http
+                    .authorizeHttpRequests(
+                            req -> {
+                                req.requestMatchers("/login", "/atualizar-token").permitAll();
+                                req.anyRequest().authenticated();
+                            }
+                    )
                     .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .csrf(csrf -> csrf.disable())
                     .addFilterBefore(filtroTokenAcesso, UsernamePasswordAuthenticationFilter.class)
                     .build();
         }
+
 
         @Bean
         public PasswordEncoder encriptador() {
