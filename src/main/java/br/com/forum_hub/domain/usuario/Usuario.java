@@ -1,12 +1,9 @@
 package br.com.forum_hub.domain.usuario;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Entity
@@ -23,6 +20,14 @@ public class Usuario implements UserDetails {
     private String nomeUsuario;
     private String biografia;
     private String miniBiografia;
+
+
+    //criações de campos para token OPACO
+    @Column(name = "refresh_token", length = 64)
+    private String refreshToken;
+
+    @Column(name = "expiracao_refresh_token")
+    private LocalDateTime expiracaoRefreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
