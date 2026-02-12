@@ -63,4 +63,20 @@ public class Usuario implements UserDetails {
     public Long getId() {
         return id;
     }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public LocalDateTime getExpiracaoRefreshToken() {
+        return expiracaoRefreshToken;
+    }
+
+    public void setExpiracaoRefreshToken(LocalDateTime expiracaoRefreshToken) {
+        this.expiracaoRefreshToken = expiracaoRefreshToken;
+    }
 }

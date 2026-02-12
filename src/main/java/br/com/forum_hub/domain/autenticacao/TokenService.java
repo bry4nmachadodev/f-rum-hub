@@ -1,6 +1,7 @@
 package br.com.forum_hub.domain.autenticacao;
 
 import br.com.forum_hub.domain.usuario.Usuario;
+import br.com.forum_hub.domain.usuario.UsuarioRepository;
 import br.com.forum_hub.infra.exception.RegraDeNegocioException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,9 +14,16 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Service
 public class TokenService {
+
+    private final UsuarioRepository usuarioRepository;
+
+    public TokenService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     public String gerarToken(Usuario usuario){
         try {
@@ -43,7 +51,6 @@ public class TokenService {
         }
     }
 
-
     private Instant expiracao(Integer minutos) {
         return LocalDateTime.now().plusMinutes(minutos).toInstant(ZoneOffset.of("-03:00"));
     }
@@ -62,5 +69,32 @@ public class TokenService {
         } catch (JWTVerificationException exception){
             throw new RegraDeNegocioException("Erro ao verificar token JWT de acesso!");
         }
+    }
+
+
+    /// desafio - token refresh - opaco
+
+    public String gerarRefreshTokenOpaco(Usuario usuario){
+
+        String refreshToken = UUID.randomUUID().toString();
+
+        usuario.setRefreshToken(refreshToken);
+        usuario.setExpiracaoRefreshToken(LocalDateTime.now().plusDays(7));
+
+        usuarioRepository.save(usuario);
+
+        return refreshToken;
+    }
+
+    public Usuario validarRefreshTokenOpaco(String refreshToken){
+
+        Usuario usuario = usuarioRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Refresh token inválido"));
+
+        if(usuario.getExpiracaoRefreshToken().isBefore(LocalDateTime.now())){
+            throw new RuntimeException("Refresh token expirado");
+        }
+
+        return usuario;
     }
 }
