@@ -88,7 +88,7 @@ public class TokenService {
 
     public Usuario validarRefreshTokenOpaco(String refreshToken){
 
-        Usuario usuario = usuarioRepository.findByRefreshToken(refreshToken)
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCaseAndVerificadoTrue(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token inválido"));
 
         if(usuario.getExpiracaoRefreshToken().isBefore(LocalDateTime.now())){
