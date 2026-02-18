@@ -96,4 +96,8 @@ public class Usuario implements UserDetails {
     public void setExpiracaoRefreshToken(LocalDateTime expiracaoRefreshToken) {
         this.expiracaoRefreshToken = expiracaoRefreshToken;
     }
+
+    public String getToken() {
+        return token;
+    }
 }
