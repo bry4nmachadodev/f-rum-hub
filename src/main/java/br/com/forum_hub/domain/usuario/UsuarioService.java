@@ -1,6 +1,7 @@
 package br.com.forum_hub.domain.usuario;
 
 import br.com.forum_hub.infra.email.EmailService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,5 +39,11 @@ public class UsuarioService implements UserDetailsService {
         emailService.enviarEmailVerificacao(usuario);
 
         return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void verificarEmail(String codigo) {
+        var usuario = usuarioRepository.findByToken(codigo).orElseThrow();
+        usuario.verificar();
     }
 }
