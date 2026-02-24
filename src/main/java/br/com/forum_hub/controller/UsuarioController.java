@@ -43,5 +43,10 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/desativar")
+    public ResponseEntity<Void> banirUsuario(@AuthenticationPrincipal Usuario logado){
+        usuarioService.desativarUsuario(logado);
+        return ResponseEntity.noContent().build();
+    }
 
 }
