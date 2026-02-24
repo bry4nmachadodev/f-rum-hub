@@ -28,12 +28,10 @@ public class Usuario implements UserDetails {
     private String token;
     private LocalDateTime expiracaoToken;
 
-    //criações de campos para token OPACO
-    @Column(name = "refresh_token", length = 64)
-    private String refreshToken;
+    private Boolean ativo;
 
-    @Column(name = "expiracao_refresh_token")
-    private LocalDateTime expiracaoRefreshToken;
+    @Deprecated
+    public Usuario(){}
 
     public Usuario(DadosCadastroUsuario dados, String senhaCriptografada) {
         this.nomeCompleto = dados.nomeCompleto();
@@ -45,7 +43,15 @@ public class Usuario implements UserDetails {
         this.verificado = false;
         this.token = UUID.randomUUID().toString();
         this.expiracaoToken = LocalDateTime.now().plusMinutes(30);
+        this.ativo = false;
     }
+
+    //criações de campos para token OPACO
+    @Column(name = "refresh_token", length = 64)
+    private String refreshToken;
+
+    @Column(name = "expiracao_refresh_token")
+    private LocalDateTime expiracaoRefreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -100,6 +106,32 @@ public class Usuario implements UserDetails {
 
     public String getToken() {
         return token;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return ativo;
+    }
+
+    public void desativar() {
+        this.ativo = false;
+    }
+
+    public Usuario alterarDados(DadosEdicaoUsuario dados) {
+        if(dados.nomeUsuario() != null){
+            this.nomeUsuario = dados.nomeUsuario();
+        }
+        if(dados.miniBiografia() != null){
+            this.miniBiografia = dados.miniBiografia();
+        }
+        if(dados.biografia() != null){
+            this.biografia = dados.biografia();
+        }
+        return this;
+    }
+
+    public void alterarSenha(String senhaCriptografada) {
+        this.senha = senhaCriptografada;
     }
 
     public void verificar() {
