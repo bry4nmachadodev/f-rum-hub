@@ -1,10 +1,11 @@
 package br.com.forum_hub.domain.perfil;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "perfis")
-public class Perfil {
+public class Perfil implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
@@ -19,5 +20,10 @@ public class Perfil {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + nome;
     }
 }
