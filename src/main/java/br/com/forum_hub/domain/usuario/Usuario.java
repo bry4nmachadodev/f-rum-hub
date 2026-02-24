@@ -30,6 +30,11 @@ public class Usuario implements UserDetails {
     private LocalDateTime expiracaoToken;
 
     private Boolean ativo;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "usuarios_perfis",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "perfil_id"))
     private List<Perfil> perfis;
 
     @Deprecated
