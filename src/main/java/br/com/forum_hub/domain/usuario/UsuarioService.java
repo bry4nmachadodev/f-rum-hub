@@ -1,5 +1,7 @@
 package br.com.forum_hub.domain.usuario;
 
+import br.com.forum_hub.domain.perfil.PerfilNome;
+import br.com.forum_hub.domain.perfil.PerfilRepository;
 import br.com.forum_hub.infra.email.EmailService;
 import br.com.forum_hub.infra.exception.RegraDeNegocioException;
 import jakarta.transaction.Transactional;
@@ -19,10 +21,13 @@ public class UsuarioService implements UserDetailsService {
 
     private final EmailService emailService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    private final PerfilRepository perfilRepository;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, EmailService emailService, PerfilRepository perfilRepository) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.perfilRepository = perfilRepository;
     }
 
     @Override
@@ -35,7 +40,10 @@ public class UsuarioService implements UserDetailsService {
     ///  cadastra no db - criptografa a senha antes de salvar
     public Usuario cadastrar(@Valid DadosCadastroUsuario dados) {
         String senhaCriptografada = passwordEncoder.encode(dados.senha());
-        var usuario  = new Usuario(dados, senhaCriptografada);
+
+        var perfil = perfilRepository.findByNome(PerfilNome.ESTUDANTE);
+
+        var usuario  = new Usuario(dados, senhaCriptografada, perfil);
 
         emailService.enviarEmailVerificacao(usuario);
 
