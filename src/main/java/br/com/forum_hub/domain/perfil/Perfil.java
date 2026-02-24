@@ -11,8 +11,8 @@ public class Perfil implements GrantedAuthority {
     @Column(nullable = false)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private PerfilNome nome;
-
 
     public Long getId() {
         return id;
