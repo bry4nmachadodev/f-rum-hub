@@ -30,7 +30,7 @@ public class Usuario implements UserDetails {
     private LocalDateTime expiracaoToken;
 
     private Boolean ativo;
-    private List<Perfil> perfil;
+    private List<Perfil> perfis;
 
     @Deprecated
     public Usuario(){}
@@ -57,7 +57,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return perfis;
     }
 
     @Override
