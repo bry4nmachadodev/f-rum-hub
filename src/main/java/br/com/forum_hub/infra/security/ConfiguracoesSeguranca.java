@@ -36,6 +36,12 @@
                                 req.requestMatchers(HttpMethod.GET, "/cursos").permitAll();
                                 req.requestMatchers(HttpMethod.GET, "/topicos/**").permitAll();
 
+                                req.requestMatchers(HttpMethod.POST, "/topicos").hasRole("ESTUDANTE");
+                                req.requestMatchers(HttpMethod.PUT, "/topicos").hasRole("ESTUDANTE");
+                                req.requestMatchers(HttpMethod.DELETE, "/topicos/**").hasRole("ESTUDANTE");
+
+                                req.requestMatchers(HttpMethod.PATCH, "/topicos/**").hasRole("MODERADOR");
+
 
                                 req.anyRequest().authenticated();
                             }
