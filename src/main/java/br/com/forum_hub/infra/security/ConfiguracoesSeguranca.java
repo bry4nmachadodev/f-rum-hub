@@ -2,6 +2,7 @@
 
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;
+    import org.springframework.http.HttpMethod;
     import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
     import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
     import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,11 @@
                     .authorizeHttpRequests(
                             req -> {
                                 req.requestMatchers("/login", "/atualizar-token", "/registrar", "/verificar-conta").permitAll();
+
+                                req.requestMatchers(HttpMethod.GET, "/cursos").permitAll();
+                                req.requestMatchers(HttpMethod.GET, "/topicos/**").permitAll();
+
+
                                 req.anyRequest().authenticated();
                             }
                     )
