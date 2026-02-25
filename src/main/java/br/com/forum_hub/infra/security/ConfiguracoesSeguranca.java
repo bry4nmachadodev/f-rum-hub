@@ -42,6 +42,8 @@
 
                                 req.requestMatchers(HttpMethod.PATCH, "/topicos/**").hasRole("MODERADOR");
 
+                                req.requestMatchers(HttpMethod.PATCH, "/adicionar-perfil/**").hasRole("ADMIN");
+
 
                                 req.anyRequest().authenticated();
                             }
