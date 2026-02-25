@@ -151,4 +151,8 @@ public class Usuario implements UserDetails {
         this.token = null;
         this.expiracaoToken = null;
     }
+
+    public void adicionarPerfil(Perfil perfil) {
+        this.perfis.add(perfil);
+    }
 }
